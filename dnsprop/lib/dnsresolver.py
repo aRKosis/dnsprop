@@ -12,6 +12,13 @@ class dnsresolver(object):
             print e
 
     def check_dns(self, ip, quer):
+        """
+        Checks a A Record for givin DNS server IP,
+        using provided DNS name server.
+
+        ip - name server for query
+        quer - the domain name for search
+        """
         ipaddr = []
         ipaddr.append(ip)
         my_resolver = dns.resolver.Resolver()  # create a new instance named 'myResolver'
@@ -20,3 +27,5 @@ class dnsresolver(object):
         myAnswers = my_resolver.query(quer, 'A')  # Lookup the 'A' record(s) for google.com
         for a in myAnswers:
             print a.address
+
+
