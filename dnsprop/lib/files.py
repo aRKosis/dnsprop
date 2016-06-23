@@ -12,7 +12,7 @@ class file_operations(object):
         except Exception as e:
             print e
 
-    def open_file(self, filename):
+    def open_file_lines(self, filename):
         """
         Opens file and returns a list of lines:
         filename = pass str() name of file
@@ -25,3 +25,15 @@ class file_operations(object):
             return ret
         except Exception as e:
             raise file_exception("Error opening file for reading list: %s" % (str(e)))
+
+    def open_file_blob(self, filename):
+        """
+        Opens file and returns a file blob of data:
+        filename = pass str() name of file
+        """
+        try:
+            with open(filename) as inputfile:
+                file_data = inputfile.read()
+            return file_data
+        except Exception as e:
+            raise file_exception("Error opening file for reading: %s" % (str(e)))
