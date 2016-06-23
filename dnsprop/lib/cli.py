@@ -13,10 +13,12 @@ def cli_parser():
         ''')
     parser.add_argument(
         "-A", metavar='8.8.8.8', help="set A record you would like to check for.")
+    parser.add_argument(
+        "-AAAA", metavar='8::::2', help="set A record you would like to check for.")
     parser.add_argument("-MX", metavar="smpt.target.com",
                         help="set MX record you would like to check for.")
-    parser.add_argument("-TXT", metavar="smpt.target.com",
-                        help="set MX record you would like to check for.")
+    parser.add_argument("-TXT", metavar="SPF: ~all ex.",
+                        help="set TXT record you would like to check for.")
     parser.add_argument(
         "-Q", action='store_true', help="pure query for domain in loop")
     parser.add_argument(
