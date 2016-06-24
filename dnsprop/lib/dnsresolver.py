@@ -13,8 +13,8 @@ class dnsresolver(object):
 
     """
         Checks for the specific record of the domain, given the DNS server IP.
-        Each method outlines a different type of DNS record to be checked, with the
-        type of record indicated in the comment below the function.
+        Each function below outlines a different type of DNS record to be checked, 
+        with the type of record indicated in the comment below the function.
 
         ip - IP addr of name server
         query - the domain name for search
