@@ -1,3 +1,5 @@
+#!bin/usr/env python
+
 from lib import files
 from lib import parsing 
 
