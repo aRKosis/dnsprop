@@ -8,7 +8,7 @@ class parser_operations(object):
     A_RECORD = "IN A "
     MX_RECORD = "IN MX "
     TXT_RECORD = "IN TXT "
-    SPF_RECORD = "IN SPF"
+    SPF_RECORD = "IN SPF "
     CNAME_RECORD = "IN CNAME "
     AAAA_RECORD = "IN AAAA "
     TXT = []
