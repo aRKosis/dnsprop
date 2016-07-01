@@ -16,11 +16,10 @@ import dns.query
 from lib import dnsresolver
 from lib import parsing
 
-def dns_propogation():
-  return 0
 
 
-def main():
+
+def cli_parser():
     parser = argparse.ArgumentParser(prog='dnsprop', conflict_handler = 'resolve', add_help=False, description=
         ''' 
         DNS proprogration is often a pain to track and maintain.\n
@@ -28,13 +27,17 @@ def main():
         a simple yet effective way to get what Recon-Ng gets and theHarvester gets
         ''')
 
+                                                    #required arguments
+
     parser.add_argument('addr', 
                         help='DNS server IP address you wish to check.')
 
     parser.add_argument('domain', 
                         help='Your domain.')
 
-    parser.add_argument('-h', '--help',
+                                                    #positional arguments
+
+    parser.add_argument('-h', '--help', '-H',
                         action="store_true", 
                         help=argparse.SUPPRESS)
 
@@ -63,7 +66,6 @@ def main():
                         metavar="")
 
     parser.add_argument("-Q", '--query',
-                        action='store_true', 
                         help="Pure query for domain in loop")
 
     parser.add_argument("-D", 
@@ -71,20 +73,42 @@ def main():
                         help="Set domain to query dns for")
 
     parser.add_argument("-V", '--verbose',
-                      action='store_true', 
-                      help="Set this switch for verbose output of modules.")
+                        action='store_true', 
+                        help="Set this switch for verbose output of modules.")
 
-    parser.add_argument('-o','--output', help='Writes output to specified file.')
+    parser.add_argument('-o','--output', 
+                        metavar='Filepath/Name', 
+                        help='Writes output to specified file.')
+
 
     args = parser.parse_args()
-        
+      
+
     if args.h:
         parser.print_help()
         sys.exit()
-    elif args.addr == '' or args.domain =='':
+
+    return args.h, args.A, args.MX, args.Q, args.D, args.V, args.addr, args.domain, args.f, args.SOA, args.TXT
 
 
-      return args.A, args.MX, args.Q, args.D, args.V, args.addr, args.domain, args.f, args.SOA, args.TXT
+def dns_propogation(variable):
+
+    try:
+        if args.addr != '':
+            dnsresolver()
+
+    except Exception as e:
+        print (e)
+
+    return 0
+
+
+def main():
+
+    resolve = dnsresolver.dnsresolver()
+    
+    dns_propogation(resolve)
+
 
 
 if __name__ == "__main__":
