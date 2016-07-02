@@ -16,7 +16,7 @@ import dns.query
 from lib import dnsresolver
 from lib import parsing
 
-
+resolve = dnsresolver.dnsresolver()
 
 
 def cli_parser():
@@ -30,84 +30,83 @@ def cli_parser():
                                                     #required arguments
 
     parser.add_argument('addr', 
-                        help='DNS server IP address you wish to check.')
+    help='DNS server IP address you wish to check.')
 
     parser.add_argument('domain', 
-                        help='Your domain.')
+    help='Your domain.')
 
-                                                    #positional arguments
 
+                                #positional arguments
     parser.add_argument('-h', '--help', '-H',
-                        action="store_true", 
+                        action='store_true',
                         help=argparse.SUPPRESS)
 
-    parser.add_argument('-f', '--file',
+    parser.add_argument("-A", '-a', 
+                        action='store_true',
+                        help="check for A record (IPv4)")
+
+    parser.add_argument("-AAAA", '-aaaa',
+                        action='store_true', 
+                        help="check for AAAA record (IPv6).")
+
+    parser.add_argument("-MX", '-mx',
+                        action='store_true', 
+                        help="Get MX record of domain.")
+
+    parser.add_argument("-TXT", '-txt',
+                        action='store_true', 
+                        help="Get TXT record of domain.")
+
+    parser.add_argument("-SOA", '-soa',
+                        action='store_true',
+                        help='Get SOA record of domain.')
+
+    # TODO
+    # parser.add_argument("-Q", '--query', '-q',
+    #                     help="Pure query for domain in loop")
+
+    parser.add_argument("-V", '--verbose', '-v',
+                        action='store_true', 
+                        help="Set this switch for verbose output of modules.")
+
+    parser.add_argument('-f', '--file', '-F',
                         metavar='filepath', 
                         help='Filepath to IPlist you wish to check for propogation.', 
                         nargs='+')
 
-    parser.add_argument("-A", 
-                        metavar='8.8.8.8', 
-                        help="check for A record (IPv4)")
-
-    parser.add_argument("-AAAA", 
-                        metavar='8::::2', 
-                        help="check for AAAA record (IPv6).")
-
-    parser.add_argument("-MX", 
-                        metavar="ex.tar.com", 
-                        help="Check for MX record.")
-
-    parser.add_argument("-TXT", 
-                        metavar="SPF: ~all ex.", 
-                        help="Set TXT record you would like to check for.")
-
-    parser.add_argument("-SOA", 
-                        metavar="")
-
-    parser.add_argument("-Q", '--query',
-                        help="Pure query for domain in loop")
-
-    parser.add_argument("-D", 
-                        metavar="domain.com", 
-                        help="Set domain to query dns for")
-
-    parser.add_argument("-V", '--verbose',
-                        action='store_true', 
-                        help="Set this switch for verbose output of modules.")
-
-    parser.add_argument('-o','--output', 
+    parser.add_argument('-o','--output', '-O',
                         metavar='Filepath/Name', 
-                        help='Writes output to specified file.')
+                        help='Writes output to specified file.',
+                        nargs='+')
 
 
     args = parser.parse_args()
-      
 
-    if args.h:
+    if args.help:
         parser.print_help()
         sys.exit()
 
-    return args.h, args.A, args.MX, args.Q, args.D, args.V, args.addr, args.domain, args.f, args.SOA, args.TXT
+    return  args.addr, args.domain, args.help, args.A, args.AAAA, args.MX, args.SOA, args.TXT, args.verbose, args.file, args.output
 
 
-def dns_propogation(variable):
+def dns_propogation():
+
+    _addr, _domain, _help, _A, _AAAA, _MX, _SOA, _TXT, _verbose, _file, _output = cli_parser()
 
     try:
-        if args.addr != '':
-            dnsresolver()
-
+        if _A:
+            print '\n \n A-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_a(_addr, _domain))
     except Exception as e:
         print (e)
-
-    return 0
-
+    
 
 def main():
 
-    resolve = dnsresolver.dnsresolver()
     
-    dns_propogation(resolve)
+
+    return dns_propogation()
+
+
 
 
 
@@ -115,7 +114,7 @@ if __name__ == "__main__":
   try:  
     main()
   except KeyboardInterrupt:
-    print 'Interrupted'
+    print ' Interrupted'
   try:
     sys.exit(0)
   except SystemExit:

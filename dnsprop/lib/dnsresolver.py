@@ -9,7 +9,7 @@ class dns_exception(Exception):
 class dnsresolver(object):
 
     #TODO
-    #VALID_RECORDS = ['A', 'MX', 'PTR', 'TXT', 'AAAA', 'CNAME', 'DHCID', 'DNSKEY', 'IPSEC', 'KEY', 'NS', 'SIG', 'SRV', 'URI']
+    # SPF record function
 
     """
         Checks for the specific record of the domain, given the DNS server IP.
@@ -36,6 +36,7 @@ class dnsresolver(object):
         my_resolver.nameservers = ipaddr
         
         myAnswers = my_resolver.query(query, 'A')  # Lookup the 'A' record(s)
+        
         for a in myAnswers:
             dnsip.append(a.address)
         return dnsip
