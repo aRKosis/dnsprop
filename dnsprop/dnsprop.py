@@ -61,6 +61,18 @@ def cli_parser():
                         action='store_true',
                         help='Get SOA record of domain.')
 
+    parser.add_argument("-NS", "-ns",
+                        action='store_true',
+                        help='Get NS record of domain.')
+
+    parser.add_argument('-CNAME', '-cname',
+                        action='store_true',
+                        help='Get CNAME record of domain.')
+
+    parser.add_argument('-DHCID', '-dhcid',
+                        action='store_true',
+                        help='Get DHCID record of domain.')
+
     # TODO
     # parser.add_argument("-Q", '--query', '-q',
     #                     help="Pure query for domain in loop")
@@ -86,16 +98,42 @@ def cli_parser():
         parser.print_help()
         sys.exit()
 
-    return  args.addr, args.domain, args.help, args.A, args.AAAA, args.MX, args.SOA, args.TXT, args.verbose, args.file, args.output
+    return  args.addr, args.domain, args.help, args.A, args.AAAA, args.MX, args.SOA, args.TXT, args.NS, args.CNAME, args.DHCID, args.verbose, args.file, args.output
 
 
 def dns_propogation():
 
-    _addr, _domain, _help, _A, _AAAA, _MX, _SOA, _TXT, _verbose, _file, _output = cli_parser()
+    _addr, _domain, _help, _A, _AAAA, _MX, _SOA, _TXT, _NS, _CNAME, _DHCID, _verbose, _file, _output = cli_parser()
 
     try:
         if _A:
             print '\n \n A-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_a(_addr, _domain))
+
+        if _AAAA:
+            print '\n \n AAAA-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_aaaa(_addr,_domain))
+
+        if _MX:
+            print '\n \n MX-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_mx(_addr,_domain))
+
+        if _SOA:
+            print '\n \n SOA-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_soa(_addr,_domain))
+
+        if _TXT:
+            print '\n \n TXT-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_ns(_addr,_domain))
+
+        if _NS:
+            print '\n \n NS-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_ns(_addr,_domain))
+
+        if _CNAME:
+            try:
+                print '\n \n CNAME-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_cname(_addr,_domain))
+            except Exception as f:
+                print (f)
+
+        if _DHCID:
+            if resolve.check_dns_dhcid(_addr,_domain) != '':
+                print '\n \n DHCID-Record for %s: \n %s \n \n' % (_domain, resolve.check_dns_dhcid(_addr,_domain))
+
     except Exception as e:
         print (e)
     
