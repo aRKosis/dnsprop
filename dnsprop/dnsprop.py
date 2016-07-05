@@ -1,7 +1,7 @@
 #!/bin/usr/env python
 
 """
-  The main controller class for DNSPropagation Checker.
+  The main controller class for DNSPropagation Checker. Yay!
 
   This will launch from ./dnsprop
 
